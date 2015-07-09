@@ -37,10 +37,10 @@ var _ = Describe("Cfcurl", func() {
 			file.Close()
 		})
 
-		It("Should return a string with the apps output for apps", func() {
+		It("Should return the output for apps", func() {
 			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(
 				v2apps, nil)
-			appsJSON, err := Curl("/v2/apps")
+			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
 			Expect(err).To(BeNil())
 			Expect(appsJSON).ToNot(BeNil())
 		})
