@@ -37,13 +37,20 @@ var _ = Describe("Cfcurl", func() {
 			file.Close()
 		})
 
-		It("Should return the output for apps", func() {
-			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(
-				v2apps, nil)
+		It("should return the output for apps", func() {
+			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
 			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
 			Expect(err).To(BeNil())
 			Expect(appsJSON).ToNot(BeNil())
 		})
 
+		It("should call the path specified", func() {
+			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
+			_, err := Curl(fakeCliConnection, "/v2/an_unpredictable_path")
+			Expect(err).To(BeNil())
+			args := fakeCliConnection.CliCommandWithoutTerminalOutputArgsForCall(0)
+			Expect("curl").To(Equal(args[0]))
+			Expect("/v2/an_unpredictable_path").To(Equal(args[1]))
+		})
 	})
 })
