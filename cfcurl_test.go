@@ -39,6 +39,10 @@ var _ = Describe("Cfcurl", func() {
 			}
 		})
 
+		AfterEach(func() {
+			v2apps = nil
+		})
+
 		It("returns an error when there is no output", func() {
 			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(nil, nil)
 			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")

@@ -25,12 +25,13 @@ func Curl(cli plugin.CliConnection, path string) (interface{}, error) {
 		return nil, errors.New("CF API returned no output")
 	}
 
-	data := strings.Join(output, " ")
+	data := strings.Join(output, "\n")
 
 	if 0 == len(data) || "" == data {
 		return nil, errors.New("Failed to join output")
 	}
 
+	fmt.Println(data)
 	var f interface{}
 	err = json.Unmarshal([]byte(data), &f)
 	//.(map[string]interface{})
