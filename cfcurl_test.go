@@ -3,6 +3,7 @@ package cfcurl_test
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"os"
 
 	. "github.com/krujos/cfcurl"
@@ -40,12 +41,20 @@ var _ = Describe("Cfcurl", func() {
 		})
 
 		It("returns an error when there is no output", func() {
+			fakeCliConnection.CliCommandWithoutTerminalOutputReturns([]string{}, nil)
+			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
+			fmt.Println(err)
+			Expect(err).ToNot(BeNil())
+			Expect(appsJSON).To(BeNil())
+		})
+
+		It("returns an error with zero length output", func() {
+
 			fakeCliConnection.CliCommandWithoutTerminalOutputReturns([]string{""}, nil)
 			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
 			Expect(err).ToNot(BeNil())
 			Expect(appsJSON).To(BeNil())
 		})
-
 		It("should return the output for apps", func() {
 			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
 			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")

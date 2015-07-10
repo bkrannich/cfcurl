@@ -25,7 +25,7 @@ func Curl(cli plugin.CliConnection, path string) (interface{}, error) {
 
 	data := strings.Join(output, " ")
 
-	if 0 == len(data) {
+	if 0 == len(data) || "" == data {
 		return nil, errors.New("Failed to join output")
 	}
 
