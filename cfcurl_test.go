@@ -62,8 +62,7 @@ var _ = Describe("Cfcurl", func() {
 
 		It("should call the path specified", func() {
 			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
-			_, err := Curl(fakeCliConnection, "/v2/an_unpredictable_path")
-			Expect(err).To(BeNil())
+			Curl(fakeCliConnection, "/v2/an_unpredictable_path")
 			args := fakeCliConnection.CliCommandWithoutTerminalOutputArgsForCall(0)
 			Expect("curl").To(Equal(args[0]))
 			Expect("/v2/an_unpredictable_path").To(Equal(args[1]))
