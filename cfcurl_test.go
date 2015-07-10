@@ -89,6 +89,12 @@ var _ = Describe("Cfcurl", func() {
 				appsJSON, _ := Curl(fakeCliConnection, "/v2/apps")
 				Expect(appsJSON["total_results"]).To(Equal(float64(2)))
 			})
+
+			It("has a results array with two elements", func() {
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
+				appsJSON, _ := Curl(fakeCliConnection, "/v2/apps")
+				Expect(len(appsJSON["resources"].([]interface{}))).To(Equal(2))
+			})
 		})
 	})
 })
