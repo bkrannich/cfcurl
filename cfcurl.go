@@ -21,7 +21,7 @@ func Curl(cli plugin.CliConnection, path string) (interface{}, error) {
 
 	fmt.Println("Len = " + strconv.Itoa(len(output)))
 
-	if nil != output || 0 == len(output) {
+	if nil == output || 0 == len(output) {
 		return nil, errors.New("CF API returned no output")
 	}
 
