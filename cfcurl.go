@@ -3,6 +3,8 @@ package cfcurl
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/cloudfoundry/cli/plugin"
@@ -11,15 +13,15 @@ import (
 // Curl calls cf curl  and return the resulting json. This method will fail if
 // the api is depricated
 func Curl(cli plugin.CliConnection, path string) (interface{}, error) {
-	_ = "breakpoint"
-
 	output, err := cli.CliCommandWithoutTerminalOutput("curl", path)
 
-	if nil == err {
+	if nil != err {
 		return nil, err
 	}
 
-	if 0 == len(output) {
+	fmt.Println("Len = " + strconv.Itoa(len(output)))
+
+	if nil != output || 0 == len(output) {
 		return nil, errors.New("CF API returned no output")
 	}
 
@@ -38,4 +40,5 @@ func Curl(cli plugin.CliConnection, path string) (interface{}, error) {
 // CurlDepricated calls cf curl and return the resulting json, even if the api is depricated
 func CurlDepricated(cli plugin.CliConnection, path string) (map[string]interface{}, error) {
 	return nil, errors.New("Not implemented")
+
 }
