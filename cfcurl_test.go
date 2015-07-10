@@ -53,12 +53,6 @@ var _ = Describe("Cfcurl", func() {
 			Expect(err).ToNot(BeNil())
 			Expect(appsJSON).To(BeNil())
 		})
-		It("should return the output for apps", func() {
-			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
-			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
-			Expect(err).To(BeNil())
-			Expect(appsJSON).ToNot(BeNil())
-		})
 
 		It("should call the path specified", func() {
 			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
@@ -73,6 +67,13 @@ var _ = Describe("Cfcurl", func() {
 			appsJSON, err := Curl(fakeCliConnection, "/v2/an_unpredictable_path")
 			Expect(appsJSON).To(BeNil())
 			Expect(err).NotTo(BeNil())
+		})
+
+		It("should return the output for apps", func() {
+			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
+			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
+			Expect(err).To(BeNil())
+			Expect(appsJSON).ToNot(BeNil())
 		})
 
 	})
