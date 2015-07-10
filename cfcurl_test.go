@@ -96,6 +96,12 @@ var _ = Describe("Cfcurl", func() {
 				appsJSON, _ := Curl(fakeCliConnection, "/v2/apps")
 				Expect(len(appsJSON["resources"].([]interface{}))).To(Equal(2))
 			})
+
+			It("has a results array with two elements and uses the deprecated call", func() {
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
+				appsJSON, _ := CurlDepricated(fakeCliConnection, "/v2/apps")
+				Expect(len(appsJSON["resources"].([]interface{}))).To(Equal(2))
+			})
 		})
 	})
 
