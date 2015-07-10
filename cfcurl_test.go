@@ -74,11 +74,21 @@ var _ = Describe("Cfcurl", func() {
 				Expect(err).NotTo(BeNil())
 			})
 		})
-		It("should return the output for apps", func() {
-			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
-			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
-			Expect(err).To(BeNil())
-			Expect(appsJSON).ToNot(BeNil())
+
+		Describe("we get legit json for apps", func() {
+
+			It("should return the output for apps", func() {
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
+				appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
+				Expect(err).To(BeNil())
+				Expect(appsJSON).ToNot(BeNil())
+			})
+
+			It("has a 2 results", func() {
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
+				appsJSON, _ := Curl(fakeCliConnection, "/v2/apps")
+				Expect(appsJSON["total_results"]).To(Equal(float64(2)))
+			})
 		})
 	})
 })
