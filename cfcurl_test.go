@@ -43,42 +43,42 @@ var _ = Describe("Cfcurl", func() {
 			v2apps = nil
 		})
 
-		It("returns an error when there is no output", func() {
-			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(nil, nil)
-			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
-			Expect(err).ToNot(BeNil())
-			Expect(appsJSON).To(BeNil())
+		Describe("cf cli results validation", func() {
+			It("returns an error when there is no output", func() {
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns(nil, nil)
+				appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
+				Expect(err).ToNot(BeNil())
+				Expect(appsJSON).To(BeNil())
+			})
+
+			It("returns an error with zero length output", func() {
+
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns([]string{""}, nil)
+				appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
+				Expect(err).ToNot(BeNil())
+				Expect(appsJSON).To(BeNil())
+			})
+
+			It("should call the path specified", func() {
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
+				Curl(fakeCliConnection, "/v2/an_unpredictable_path")
+				args := fakeCliConnection.CliCommandWithoutTerminalOutputArgsForCall(0)
+				Expect("curl").To(Equal(args[0]))
+				Expect("/v2/an_unpredictable_path").To(Equal(args[1]))
+			})
+
+			It("returns an error when the cli fails", func() {
+				fakeCliConnection.CliCommandWithoutTerminalOutputReturns(nil, errors.New("Something bad"))
+				appsJSON, err := Curl(fakeCliConnection, "/v2/an_unpredictable_path")
+				Expect(appsJSON).To(BeNil())
+				Expect(err).NotTo(BeNil())
+			})
 		})
-
-		It("returns an error with zero length output", func() {
-
-			fakeCliConnection.CliCommandWithoutTerminalOutputReturns([]string{""}, nil)
-			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
-			Expect(err).ToNot(BeNil())
-			Expect(appsJSON).To(BeNil())
-		})
-
-		It("should call the path specified", func() {
-			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
-			Curl(fakeCliConnection, "/v2/an_unpredictable_path")
-			args := fakeCliConnection.CliCommandWithoutTerminalOutputArgsForCall(0)
-			Expect("curl").To(Equal(args[0]))
-			Expect("/v2/an_unpredictable_path").To(Equal(args[1]))
-		})
-
-		It("returns an error when the cli fails", func() {
-			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(nil, errors.New("Something bad"))
-			appsJSON, err := Curl(fakeCliConnection, "/v2/an_unpredictable_path")
-			Expect(appsJSON).To(BeNil())
-			Expect(err).NotTo(BeNil())
-		})
-
 		It("should return the output for apps", func() {
 			fakeCliConnection.CliCommandWithoutTerminalOutputReturns(v2apps, nil)
 			appsJSON, err := Curl(fakeCliConnection, "/v2/apps")
 			Expect(err).To(BeNil())
 			Expect(appsJSON).ToNot(BeNil())
 		})
-
 	})
 })
