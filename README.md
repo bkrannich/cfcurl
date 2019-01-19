@@ -9,7 +9,7 @@ about accessing the CF api through the CLI framework. The conclusion was that
 isn't such a great idea to use the internals of the CLI, so this feels like the
 rght way to do it to me.
 
-#Usage
+# Usage
 [Here's an example plugin](https://github.com/krujos/cfcurl-testplugin) that makes use of it, it prints the contents of the marshaled JSON. 
 
 ```
@@ -24,7 +24,7 @@ func (cmd *TestCmd) Run(cliConnection plugin.CliConnection, args []string) {
 
 ```
 
-#API
+# API
 The package offers two methods `Curl` and `CurlDepricated`.
 
 * `Curl` calls "current" (or experimental) API specified by the path argument and returns a `map[string]interface{}`. If you call a deprecated API with this method it will `panic`.
